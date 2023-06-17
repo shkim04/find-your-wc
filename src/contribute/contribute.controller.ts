@@ -1,8 +1,9 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ContributeService } from './contribute.service';
+
 @Controller('contribute')
 export class ContributeController {
-  @Inject() private contributeService: ContributeService;
+  constructor(private contributeService: ContributeService) {}
 
   @Get()
   getContributes() {

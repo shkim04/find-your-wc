@@ -1,8 +1,9 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CityService } from './city.service';
+
 @Controller('city')
 export class CityController {
-  @Inject() private cityService: CityService;
+  constructor(private cityService: CityService) {}
 
   @Get()
   getCity() {
