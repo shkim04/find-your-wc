@@ -2,11 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CityModule } from './city/city.module';
-import { ContributeModule } from './contribute/contribute.module';
+import { ToiletsModule } from './toilets/toilets.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), CityModule, ContributeModule],
+  imports: [ConfigModule.forRoot(), ToiletsModule],
   controllers: [AppController],
   providers: [AppService],
 })
