@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ToiletsService } from './toilets.service';
-import { ToiletsController } from './toilets.controller';
+import { ToiletResolver } from './toilets.resolver';
 
 @Module({
-  controllers: [ToiletsController],
-  providers: [ToiletsService],
-  exports: [ToiletsService],
+  providers: [ToiletResolver, ToiletsService],
 })
 export class ToiletsModule {}

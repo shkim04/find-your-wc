@@ -1,0 +1,38 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Toilet {
+  id: String!
+  country: String!
+  city: String!
+  address: String!
+}
+
+type Query {
+  toilet(id: String!): Toilet!
+  toilets(ids: [String!]!): [Toilet!]!
+}
+
+type Mutation {
+  createToilet(createToiletData: CreateToiletInput!): Toilet!
+  updateToilet(updateToiletData: UpdateToiletInput!): Toilet!
+  deleteToilet(deleteToiletDate: DeleteToiletInput!): Toilet!
+}
+
+input CreateToiletInput {
+  address: String!
+  city: String!
+  country: String!
+}
+
+input UpdateToiletInput {
+  id: String!
+  address: String!
+  city: String!
+  country: String!
+}
+
+input DeleteToiletInput {
+  id: String!
+}
