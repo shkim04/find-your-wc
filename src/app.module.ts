@@ -9,13 +9,14 @@ import { AddressService } from './address/address.service';
 import { ReviewsService } from './reviews/reviews.service';
 import { ReviewsModule } from './reviews/reviews.module';
 import { AddressModule } from './address/address.module';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'schema.gql',
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     ToiletsModule,
     PrismaModule,

@@ -1,6 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Address } from 'src/address/models/address';
-import { Review } from 'src/reviews/models/reviews';
+import { Review } from 'src/reviews/models/review';
 
 @ObjectType()
 export class Toilet {
@@ -8,15 +8,15 @@ export class Toilet {
   id: string;
 
   @Field(() => Address, { nullable: false })
-  address: Address;
+  address?: Address;
 
-  @Field(() => [Review])
+  @Field(() => [Review], { nullable: 'itemsAndList' })
   reviews?: Review[];
 
   @Field()
   isPaid: boolean;
 
-  @Field()
+  @Field(() => Int)
   price: number;
 
   @Field()

@@ -1,30 +1,25 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
-import { Address } from 'src/address/models/address';
-import { Review } from 'src/reviews/models/reviews';
 
 @InputType()
-export class UpdateToiletInput {
+export class CreateAddressInput {
   @Field()
   @IsNotEmpty()
   id: string;
 
   @Field()
   @IsNotEmpty()
-  addressId: string;
+  streetNumber: string;
 
   @Field()
   @IsNotEmpty()
-  address: Address;
+  street: string;
 
   @Field()
   @IsNotEmpty()
-  isPaid: boolean;
+  city: string;
 
   @Field()
   @IsNotEmpty()
-  price: number;
-
-  @Field()
-  reviews?: Review[];
+  country: string;
 }

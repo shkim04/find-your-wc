@@ -1,19 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { Review } from './models/reviews';
+import { Review } from './models/review';
+import { GetReviewArgs } from './dto/args/get-review.args';
+import { GetReviewsArgs } from './dto/args/get-reviews.args';
 
 @Injectable()
 export class ReviewsService {
   private reviews: Review[] = [];
-  async getReview(getReviewArg) {
-    return this.reviews.find((review) => review.id === getReviewArg.id);
+
+  public async getReview(getReviewArgs: GetReviewArgs): Promise<Review> {
+    return this.reviews.find((review) => review.id === getReviewArgs.id);
   }
 
-  async getReviews(getReviewsArg) {
-    return getReviewsArg.ids.map((id) => this.getReview({ id }));
+  public async getReviews(getReviewsArgs: GetReviewsArgs): Promise<Review[]> {
+    return this.reviews.filter(
+      (toilet) => getReviewsArgs.ids.indexOf(toilet.id) !== -1,
+    );
   }
 
-  async createReview(createReviewData) {
+  public async createReview(createReviewData): Promise<Review> {
     const review: Review = {
       id: uuidv4(),
       ...createReviewData,
@@ -23,7 +28,7 @@ export class ReviewsService {
     return review;
   }
 
-  async updateReview(updateReviewData) {
+  public async updateReview(updateReviewData): Promise<Review> {
     const review = this.reviews.find(
       (review) => review.id === updateReviewData.id,
     );
@@ -32,7 +37,7 @@ export class ReviewsService {
     return review;
   }
 
-  async deleteReview(deleteReviewData) {
+  public async deleteReview(deleteReviewData): Promise<Review> {
     const reviewIndex = this.reviews.findIndex(
       (review) => review.id === deleteReviewData.id,
     );

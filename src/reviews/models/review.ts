@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Toilet } from 'src/toilets/models/toilets';
+import { Toilet } from 'src/toilets/models/toilet';
 
 @ObjectType()
 export class Review {

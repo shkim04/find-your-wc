@@ -1,14 +1,14 @@
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { Toilet } from './models/toilets';
+import { Toilet } from './models/toilet';
 import { ToiletsService } from './toilets.service';
 import { GetToiletArgs } from './dto/args/get-toilet.args';
 import { GetToiletsArgs } from './dto/args/get-toilets.args';
 import { CreateToiletInput } from './dto/input/create-toilet.input';
-import { UpdateToiletInput } from './dto/input/update-user.input';
+import { UpdateToiletInput } from './dto/input/update-toilet.input';
 import { DeleteToiletInput } from './dto/input/delete-toilet.input';
 
 @Resolver(() => Toilet)
-export class ToiletResolver {
+export class ToiletsResolver {
   constructor(private readonly toiletService: ToiletsService) {}
 
   @Query(() => Toilet, { name: 'toilet', nullable: false })
@@ -37,8 +37,8 @@ export class ToiletResolver {
 
   @Mutation(() => Toilet)
   async deleteToilet(
-    @Args('deleteToiletDate') deleteToiletData: DeleteToiletInput,
+    @Args('deleteToiletData') deleteToiletData: DeleteToiletInput,
   ): Promise<Toilet> {
-    return this.toiletService.deleteToilets(deleteToiletData);
+    return this.toiletService.deleteToilet(deleteToiletData);
   }
 }

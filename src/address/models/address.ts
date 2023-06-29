@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Toilet } from 'src/toilets/models/toilets';
+import { Toilet } from 'src/toilets/models/toilet';
 
 @ObjectType()
 export class Address {
@@ -19,5 +19,8 @@ export class Address {
   country: string;
 
   @Field()
-  toilet: Toilet;
+  toiletId?: string;
+
+  @Field(() => Toilet)
+  toilet?: Toilet;
 }

@@ -1,6 +1,6 @@
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
 import { ReviewsService } from './reviews.service';
-import { Review } from './models/reviews';
+import { Review } from './models/review';
 import { GetReviewArgs } from './dto/args/get-review.args';
 import { GetReviewsArgs } from './dto/args/get-reviews.args';
 import { CreateReviewInput } from './dto/input/create-review.input';
