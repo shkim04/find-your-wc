@@ -12,7 +12,8 @@ datasource db {
 
 model Toilet {
   id        String   @id @default(uuid())
-  address   Address?
+  addressId String   @unique
+  address   Address  @relation(fields: [addressId], references: [id])
   reviews   Review[]
   isPaid    Boolean
   price     Int
@@ -26,8 +27,7 @@ model Address {
   street       String
   city         String
   country      String
-  toiletId     String @unique
-  toilet       Toilet @relation(fields: [toiletId], references: [id])
+  toilet       Toilet?
 }
 
 model Review {

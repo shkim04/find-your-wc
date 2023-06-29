@@ -1,33 +1,27 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Address } from 'src/address/models/address';
+import { Review } from 'src/reviews/models/reviews';
 
 @ObjectType()
 export class Toilet {
   @Field()
   id: string;
 
-  @Field()
-  country: string;
+  @Field(() => Address, { nullable: false })
+  address: Address;
+
+  @Field(() => [Review])
+  reviews?: Review[];
 
   @Field()
-  city: string;
+  isPaid: boolean;
 
   @Field()
-  address: string;
-  // cleanliness: number;
-  // contributor: Contributor[];
-  // createdAt: Date;
-  // updatedAt: Date;
+  price: number;
+
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }
-
-// class City {
-//   id: string;
-//   toilets: Toilet[];
-//   country: string;
-// }
-
-// class Contributor {
-//   id: string;
-//   email: string;
-//   cleanliness: number;
-//   experience: string;
-// }

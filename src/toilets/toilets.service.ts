@@ -14,6 +14,8 @@ export class ToiletsService {
   public createToilet(createToiletData: CreateToiletInput): Toilet {
     const toilet: Toilet = {
       id: uuidv4(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       ...createToiletData,
     };
 
