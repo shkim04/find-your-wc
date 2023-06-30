@@ -10,7 +10,7 @@ export class CreateReviewInput {
   performance: number;
 
   @Field()
-  remark?: string;
+  description?: string;
 
   @Field()
   @IsNotEmpty()

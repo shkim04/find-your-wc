@@ -14,5 +14,5 @@ export class UpdateReviewInput {
   performance: number;
 
   @Field()
-  remark?: string;
+  description?: string;
 }

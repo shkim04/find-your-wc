@@ -15,6 +15,11 @@ export class AddressResolver {
     return this.addressService.getAddress(getAddressArgs);
   }
 
+  @Query(() => Address, { name: 'addresses', nullable: false })
+  async getAddresses(@Args() args): Promise<Address> {
+    return this.addressService.getAddresses(args);
+  }
+
   @Mutation(() => Address)
   async createAddress(
     @Args('createAddressData') createAddressData: CreateAddressInput,
