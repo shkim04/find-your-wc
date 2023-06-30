@@ -25,8 +25,6 @@ export class ToiletsService {
   ): Promise<Toilet> {
     const toilet: Toilet = {
       id: uuidv4(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
       ...createToiletData,
     };
 

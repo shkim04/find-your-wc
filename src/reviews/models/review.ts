@@ -1,32 +1,32 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Toilet } from 'src/toilets/models/toilet';
+import { Review as ReviewDB, Toilet as ToiletDB } from '@prisma/client';
 
 @ObjectType()
 export class Review {
   @Field()
-  id: string;
+  id: ReviewDB['id'];
 
   @Field()
-  cleanliness: number;
+  cleanliness: ReviewDB['cleanliness'];
 
   @Field()
-  performance: number;
+  performance: ReviewDB['performance'];
 
   @Field()
-  remark?: string;
+  description?: ReviewDB['description'];
 
   @Field()
-  contributedBy: string;
+  contributedBy: ReviewDB['contributedBy'];
 
   @Field()
-  toiletId: string;
-
-  @Field(() => Toilet, { nullable: false })
-  toilet: Toilet;
+  toiletId: ToiletDB['id'];
 
   @Field()
-  createdAt: Date;
+  toilet: ToiletDB;
 
   @Field()
-  updatedAt: Date;
+  createdAt: ReviewDB['createdAt'];
+
+  @Field()
+  updatedAt: ReviewDB['updatedAt'];
 }
