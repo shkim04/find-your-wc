@@ -1,15 +1,10 @@
+import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ToiletsModule } from './toilets/toilets.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { PrismaService } from './prisma/prisma.service';
-import { PrismaModule } from './prisma/prisma.module';
-import { AddressService } from './address/address.service';
-import { ReviewsService } from './reviews/reviews.service';
-import { ReviewsModule } from './reviews/reviews.module';
-import { AddressModule } from './address/address.module';
-import { join } from 'path';
+import { PrismaModule } from './database/prisma.module';
 
 @Module({
   imports: [
@@ -20,9 +15,7 @@ import { join } from 'path';
     }),
     ToiletsModule,
     PrismaModule,
-    ReviewsModule,
-    AddressModule,
   ],
-  providers: [PrismaService, AddressService, ReviewsService],
+  providers: [],
 })
 export class AppModule {}

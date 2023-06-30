@@ -7,7 +7,7 @@ import {
 
 @ObjectType()
 export class Toilet {
-  @Field()
+  @Field(() => String)
   id: ToiletDB['id'];
 
   @Field()
@@ -16,7 +16,7 @@ export class Toilet {
   @Field()
   reviews?: ReviewDB[];
 
-  @Field()
+  @Field(() => Boolean)
   isPaid: ToiletDB['isPaid'];
 
   @Field(() => Int)

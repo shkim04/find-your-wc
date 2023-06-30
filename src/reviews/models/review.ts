@@ -1,32 +1,29 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Review as ReviewDB, Toilet as ToiletDB } from '@prisma/client';
+import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
+import { Review as ReviewDB } from '@prisma/client';
 
 @ObjectType()
 export class Review {
-  @Field()
+  @Field(() => String)
   id: ReviewDB['id'];
 
-  @Field()
+  @Field(() => Int)
   cleanliness: ReviewDB['cleanliness'];
 
-  @Field()
+  @Field(() => Int)
   performance: ReviewDB['performance'];
 
-  @Field()
+  @Field(() => String)
   description?: ReviewDB['description'];
 
-  @Field()
+  @Field(() => String)
   contributedBy: ReviewDB['contributedBy'];
 
-  @Field()
-  toiletId: ToiletDB['id'];
+  @Field(() => String)
+  toiletId: ReviewDB['id'];
 
-  @Field()
-  toilet: ToiletDB;
-
-  @Field()
+  @Field(() => GraphQLISODateTime)
   createdAt: ReviewDB['createdAt'];
 
-  @Field()
+  @Field(() => GraphQLISODateTime)
   updatedAt: ReviewDB['updatedAt'];
 }

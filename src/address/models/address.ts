@@ -1,26 +1,23 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Address as AddressDB, Toilet as ToiletDB } from '@prisma/client';
+import { Address as AddressDB } from '@prisma/client';
 
 @ObjectType()
 export class Address {
-  @Field()
+  @Field(() => String)
   id: AddressDB['id'];
 
   @Field()
   streetNumber: AddressDB['streetNumber'];
 
-  @Field()
+  @Field(() => String)
   street: AddressDB['street'];
 
-  @Field()
+  @Field(() => String)
   city: AddressDB['city'];
 
-  @Field()
+  @Field(() => String)
   country: AddressDB['country'];
 
-  @Field()
-  toiletId?: ToiletDB['id'];
-
-  @Field()
-  toilet?: ToiletDB;
+  @Field(() => String)
+  toiletId?: AddressDB['id'];
 }

@@ -6,54 +6,55 @@ import { UpdateToiletInput } from './dto/input/update-toilet.input';
 import { GetToiletArgs } from './dto/args/get-toilet.args';
 import { GetToiletsArgs } from './dto/args/get-toilets.args';
 import { DeleteToiletInput } from './dto/input/delete-toilet.input';
+import { ToiletsRepository } from './toilets.repository';
 
 @Injectable()
 export class ToiletsService {
-  private toilets: Toilet[] = [];
+  constructor(private repository: ToiletsRepository) {}
 
   public async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
-    return this.toilets.find((toilet) => toilet.id === getToiletArgs.id);
+    return await this.repository.getToilet({
+      where: { id: getToiletArgs.id },
+    });
   }
   public async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
-    return this.toilets.filter(
-      (toilet) => getToiletsArgs.ids.indexOf(toilet.id) !== -1,
-    );
+    return await this.repository.getToilets({
+      where: {
+        id: { in: getToiletsArgs.ids },
+      },
+    });
   }
 
   public async createToilet(
     createToiletData: CreateToiletInput,
   ): Promise<Toilet> {
-    const toilet: Toilet = {
-      id: uuidv4(),
-      ...createToiletData,
-    };
-
-    this.toilets.push(toilet);
-
+    const toilet = await this.repository.createToilet({
+      data: {
+        id: uuidv4(),
+        ...createToiletData,
+      },
+    });
     return toilet;
   }
   public async updateToilet(
     updateToiletData: UpdateToiletInput,
   ): Promise<Toilet> {
-    const toilet = this.toilets.find(
-      (toilet) => toilet.id === updateToiletData.id,
-    );
+    const toilet = await this.repository.updateToilet({
+      where: { id: updateToiletData.id },
+      data: updateToiletData,
+    });
 
-    Object.assign(toilet, updateToiletData);
     return toilet;
   }
 
   public async deleteToilet(
     deleteToiletData: DeleteToiletInput,
   ): Promise<Toilet> {
-    const toiletIndex = this.toilets.findIndex(
-      (toilet) => toilet.id === deleteToiletData.id,
-    );
-    const toilet = this.toilets[toiletIndex];
-
-    this.toilets = this.toilets.filter(
-      (toilet, index) => index !== toiletIndex,
-    );
+    const toilet = await this.repository.deleteToilet({
+      where: {
+        id: deleteToiletData.id,
+      },
+    });
 
     return toilet;
   }
