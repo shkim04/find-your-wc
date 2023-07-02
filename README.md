@@ -25,8 +25,6 @@
 
 ## Data modeling
 
-- city
-
 ```js
 model Toilet {
   id      String   @id @default(uuid())
