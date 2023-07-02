@@ -23,72 +23,68 @@
    - cleanliness
    - overall rating
 
-## data expected - will be specified later
+## Data modeling
 
 - city
 
 ```js
-{
-    country: string,
-    city: string,
-    address: string,
-    type: string,
-    price: number,
-    experience {
-        cleanliness: float,
-        rating: float,
-        room_for_improvement: string
-    },
-    contributors [
-        {
-            email: string,
-            country: string,
-            city: string,
-            review: string | null, // Reference reviews id
-            created_at: Date
-        }
-    ]
+model Toilet {
+  id      String   @id @default(uuid())
+  address Address?
+  reviews Review[]
+  isPaid  Boolean
+  price   Int
+}
+
+model Address {
+  id           String  @id @default(uuid())
+  streetNumber String
+  street       String
+  city         String
+  country      String
+  toiletId     String  @unique
+  toilet       Toilet? @relation(fields: [toiletId], references: [id])
+}
+
+model Review {
+  id            String   @id @default(uuid())
+  cleanliness   Float
+  performance   Float
+  description   String?  @db.VarChar(1024)
+  contributedBy String   @unique
+  toiletId      String
+  toilet        Toilet?  @relation(fields: [toiletId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 ```
 
-- review
-
-```js
-{
-    reviewsId: string @unique,
-    contents: string
-}
-```
-
-## Tech Stack - Will choose each item step by step
-
-### Frontend
-
-1. Framerwork
-   [ ] Next.js
-   [ ] Svelte
-2. Tailwind.css
+## Tech Stack
 
 ### Backend
 
 1. Main Backend
    - [x] Nest.js
-   - [ ] express.js
 2. API
    - [x] GraphQL
 3. Database
    - [x] PostgreQL
 
+### Frontend
+
+1. Framerwork
+   - [x] Next.js
+2. Tailwind.css
+
 ### Utilities
 
-1. Google Map API
-2. Other Map API if any
+1. Map API
+   - [ ] Google
+   - [ ] Others if any
 
 ### Deploy
 
 1. Backend Candidates
-
-   - [ ] Naver Cloud
    - [x] Google Cloud Run
 
 2. Frontend
