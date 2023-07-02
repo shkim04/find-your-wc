@@ -5,10 +5,6 @@ import { IsNotEmpty } from 'class-validator';
 export class CreateAddressInput {
   @Field()
   @IsNotEmpty()
-  id: string;
-
-  @Field()
-  @IsNotEmpty()
   streetNumber: string;
 
   @Field()
@@ -22,4 +18,8 @@ export class CreateAddressInput {
   @Field()
   @IsNotEmpty()
   country: string;
+
+  @Field()
+  @IsNotEmpty()
+  toiletId: string;
 }

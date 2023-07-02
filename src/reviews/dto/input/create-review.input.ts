@@ -16,4 +16,8 @@ export class CreateReviewInput {
   @IsNotEmpty()
   @IsEmail()
   contributedBy: string;
+
+  @Field()
+  @IsNotEmpty()
+  toiletId: string;
 }

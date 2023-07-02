@@ -6,7 +6,7 @@ export class Address {
   @Field(() => String)
   id: AddressDB['id'];
 
-  @Field()
+  @Field(() => String)
   streetNumber: AddressDB['streetNumber'];
 
   @Field(() => String)
@@ -19,5 +19,5 @@ export class Address {
   country: AddressDB['country'];
 
   @Field(() => String)
-  toiletId?: AddressDB['id'];
+  toiletId: AddressDB['id'];
 }

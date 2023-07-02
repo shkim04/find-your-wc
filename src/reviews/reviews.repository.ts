@@ -13,7 +13,7 @@ export class ReviewRepository {
     return this.prisma.review.findUnique({ where });
   }
 
-  async getReviewes(params: {
+  async getReviews(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.ReviewWhereUniqueInput;

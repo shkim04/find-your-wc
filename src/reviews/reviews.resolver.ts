@@ -12,13 +12,13 @@ export class ReviewResolver {
   constructor(private readonly reviewService: ReviewsService) {}
 
   @Query(() => Review, { name: 'review', nullable: false })
-  async getReview(@Args() getToiletArgs: GetReviewArgs): Promise<Review> {
-    return this.reviewService.getReview(getToiletArgs);
+  async getReview(@Args() getReviewArgs: GetReviewArgs): Promise<Review> {
+    return this.reviewService.getReview(getReviewArgs);
   }
 
   @Query(() => [Review], { name: 'reviews', nullable: false })
-  async getReviews(@Args() getToiletsArgs: GetReviewsArgs): Promise<Review[]> {
-    return this.reviewService.getReviews(getToiletsArgs);
+  async getReviews(@Args() getReviewsArgs: GetReviewsArgs): Promise<Review[]> {
+    return this.reviewService.getReviews(getReviewsArgs);
   }
 
   @Mutation(() => Review)

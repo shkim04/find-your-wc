@@ -5,6 +5,7 @@ import { GetAddressArgs } from './dto/args/get-address.args';
 import { CreateAddressInput } from './dto/input/create-address.input';
 import { UpdateAddressInput } from './dto/input/update-address.input';
 import { DeleteAddressInput } from './dto/input/delete-address.input';
+import { GetAddressesArgs } from './dto/args/get-addresses.args';
 
 @Resolver(() => Address)
 export class AddressResolver {
@@ -16,8 +17,10 @@ export class AddressResolver {
   }
 
   @Query(() => Address, { name: 'addresses', nullable: false })
-  async getAddresses(@Args() args): Promise<Address> {
-    return this.addressService.getAddresses(args);
+  async getAddresses(
+    @Args() getAddressesArgs: GetAddressesArgs,
+  ): Promise<Address[]> {
+    return this.addressService.getAddresses(getAddressesArgs);
   }
 
   @Mutation(() => Address)

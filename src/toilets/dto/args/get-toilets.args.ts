@@ -5,5 +5,17 @@ import { IsArray } from 'class-validator';
 export class GetToiletsArgs {
   @Field(() => [String])
   @IsArray()
-  ids: string[];
+  ids?: string[];
+
+  @Field(() => [String])
+  @IsArray()
+  streets?: string[];
+
+  @Field(() => [String])
+  @IsArray()
+  cities?: string[];
+
+  @Field(() => [String])
+  @IsArray()
+  countries?: string[];
 }

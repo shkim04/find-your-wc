@@ -3,7 +3,7 @@ import { IsArray } from 'class-validator';
 
 @ArgsType()
 export class GetReviewsArgs {
-  @Field(() => [String])
+  @Field(() => String)
   @IsArray()
-  ids: string[];
+  toiletId: string;
 }

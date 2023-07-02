@@ -11,11 +11,11 @@ datasource db {
 }
 
 model Toilet {
-  id        String   @id @default(uuid())
-  address   Address?
-  reviews   Review[]
-  isPaid    Boolean
-  price     Int
+  id      String   @id @default(uuid())
+  address Address?
+  reviews Review[]
+  isPaid  Boolean
+  price   Int
 }
 
 model Address {
@@ -24,7 +24,7 @@ model Address {
   street       String
   city         String
   country      String
-  toiletId     String? @unique
+  toiletId     String  @unique
   toilet       Toilet? @relation(fields: [toiletId], references: [id])
 }
 
@@ -35,7 +35,7 @@ model Review {
   description   String?  @db.VarChar(1024)
   contributedBy String   @unique
   toiletId      String
-  toilet        Toilet   @relation(fields: [toiletId], references: [id])
+  toilet        Toilet?  @relation(fields: [toiletId], references: [id])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

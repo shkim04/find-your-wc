@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Toilet } from './models/toilet';
+
 import { CreateToiletInput } from './dto/input/create-toilet.input';
 import { UpdateToiletInput } from './dto/input/update-toilet.input';
+import { DeleteToiletInput } from './dto/input/delete-toilet.input';
+
 import { GetToiletArgs } from './dto/args/get-toilet.args';
 import { GetToiletsArgs } from './dto/args/get-toilets.args';
-import { DeleteToiletInput } from './dto/input/delete-toilet.input';
+
 import { ToiletsRepository } from './toilets.repository';
 
 @Injectable()
@@ -20,7 +23,24 @@ export class ToiletsService {
   public async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
     return await this.repository.getToilets({
       where: {
-        id: { in: getToiletsArgs.ids },
+        OR: [
+          { id: { in: getToiletsArgs.ids } },
+          {
+            address: {
+              street: { in: getToiletsArgs.streets },
+            },
+          },
+          {
+            address: {
+              city: { in: getToiletsArgs.cities },
+            },
+          },
+          {
+            address: {
+              country: { in: getToiletsArgs.countries },
+            },
+          },
+        ],
       },
     });
   }

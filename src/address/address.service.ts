@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as uuidv4 from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import { GetAddressArgs } from './dto/args/get-address.args';
 import { CreateAddressInput } from './dto/input/create-address.input';
@@ -8,6 +8,7 @@ import { DeleteAddressInput } from './dto/input/delete-address.input';
 
 import { Address } from './models/address';
 import { AddressRepository } from './address.repository';
+import { GetAddressesArgs } from './dto/args/get-addresses.args';
 
 @Injectable()
 export class AddressService {
@@ -15,13 +16,21 @@ export class AddressService {
 
   public async getAddress(getAddressArgs: GetAddressArgs): Promise<Address> {
     return await this.addressRepository.getAddress({
-      where: { id: getAddressArgs.id },
+      where: { toiletId: getAddressArgs.toiletId },
     });
   }
 
-  public async getAddresses({ city, street }): Promise<Address[]> {
+  public async getAddresses(
+    getAddressesArgs: GetAddressesArgs,
+  ): Promise<Address[]> {
     return await this.addressRepository.getAddresses({
-      where: { OR: [{ city: city }, { street: street }] },
+      where: {
+        OR: [
+          { street: getAddressesArgs.street },
+          { city: getAddressesArgs.city },
+          { country: getAddressesArgs.country },
+        ],
+      },
     });
   }
 

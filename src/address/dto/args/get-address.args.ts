@@ -3,7 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 
 @ArgsType()
 export class GetAddressArgs {
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
-  id: string;
+  toiletId: string;
 }

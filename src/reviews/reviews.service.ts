@@ -17,9 +17,9 @@ export class ReviewsService {
     });
   }
 
-  public async getReviews(toiletId: string): Promise<Review[]> {
-    return await this.reviewRepository.getReviewes({
-      where: { toiletId: toiletId },
+  public async getReviews(getReviewsArgs): Promise<Review[]> {
+    return await this.reviewRepository.getReviews({
+      where: { toiletId: getReviewsArgs.toiletId },
     });
   }
 
@@ -29,7 +29,6 @@ export class ReviewsService {
     const review = await this.reviewRepository.createReview({
       data: {
         id: uuidv4(),
-        toilet: {},
         ...createReviewData,
       },
     });
