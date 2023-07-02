@@ -1,0 +1,111 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Toilet {
+  id: String!
+  isPaid: Boolean!
+  price: Int!
+  address: Address!
+  reviews: [Review!]!
+}
+
+type Address {
+  id: String!
+  streetNumber: String!
+  street: String!
+  city: String!
+  country: String!
+  toiletId: String!
+}
+
+type Review {
+  id: String!
+  cleanliness: Float!
+  performance: Float!
+  description: String
+  contributedBy: String!
+  toiletId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  toilet(id: String!): Toilet!
+  toilets(ids: [String!]!, streets: [String!]!, cities: [String!]!, countries: [String!]!): [Toilet!]!
+  review(id: String!): Review!
+  reviews(toiletId: String!): [Review!]!
+  address(toiletId: String!): Address!
+  addresses(street: String!, city: String!, country: String!): Address!
+}
+
+type Mutation {
+  createToilet(createToiletData: CreateToiletInput!): Toilet!
+  updateToilet(updateToiletData: UpdateToiletInput!): Toilet!
+  deleteToilet(deleteToiletData: DeleteToiletInput!): Toilet!
+  createReview(createReviewData: CreateReviewInput!): Review!
+  updateReview(updateReviewData: UpdateReviewInput!): Review!
+  deleteReview(deleteReviewData: DeleteReviewInput!): Review!
+  createAddress(createAddressData: CreateAddressInput!): Address!
+  updateAddress(updateAddressData: UpdateAddressInput!): Address!
+  deleteAddress(deleteAddressData: DeleteAddressInput!): Address!
+}
+
+input CreateToiletInput {
+  isPaid: Boolean!
+  price: Float!
+}
+
+input UpdateToiletInput {
+  id: String!
+  isPaid: Boolean!
+  price: Float!
+}
+
+input DeleteToiletInput {
+  id: String!
+}
+
+input CreateReviewInput {
+  cleanliness: Float!
+  performance: Float!
+  description: String!
+  contributedBy: String!
+  toiletId: String!
+}
+
+input UpdateReviewInput {
+  id: String!
+  cleanliness: Float!
+  performance: Float!
+  description: String!
+}
+
+input DeleteReviewInput {
+  id: String!
+}
+
+input CreateAddressInput {
+  streetNumber: String!
+  street: String!
+  city: String!
+  country: String!
+  toiletId: String!
+}
+
+input UpdateAddressInput {
+  id: String!
+  streetNumber: String!
+  street: String!
+  city: String!
+  country: String!
+}
+
+input DeleteAddressInput {
+  id: String!
+}
