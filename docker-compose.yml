@@ -1,3 +1,4 @@
+version: '3'
 services:
   postgres:
     image: postgres
@@ -5,14 +6,32 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_NAME=${POSTGRES_NAME}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_HOST=${POSTGRES_HOST}
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - dbData:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    volumes:
+      - rbQueue:/var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
+    networks:
+      - backend
+
 volumes:
-  postgres:
+  dbData:
+  rbQueue:
+backend:
+  driver: bridge
