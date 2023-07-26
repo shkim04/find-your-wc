@@ -1,5 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Toilet as ToiletDB } from '@prisma/client';
+import { Address } from 'src/address/models/address';
+import { Review } from 'src/reviews/models/review';
 
 @ObjectType()
 export class Toilet {
@@ -11,4 +13,10 @@ export class Toilet {
 
   @Field(() => Int)
   price: ToiletDB['price'];
+
+  @Field(() => Address)
+  address?: Address;
+
+  @Field(() => Review)
+  reviews?: Review[];
 }
