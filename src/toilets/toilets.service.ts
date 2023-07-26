@@ -52,6 +52,12 @@ export class ToiletsService {
       data: {
         id: uuidv4(),
         ...createToiletData,
+        address: {
+          create: createToiletData.address,
+        },
+        reviews: {
+          create: createToiletData.reviews,
+        },
       },
     });
     return toilet;

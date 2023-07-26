@@ -18,8 +18,4 @@ export class CreateAddressInput {
   @Field()
   @IsNotEmpty()
   country: string;
-
-  @Field()
-  @IsNotEmpty()
-  toiletId: string;
 }

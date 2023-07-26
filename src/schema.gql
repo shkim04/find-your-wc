@@ -2,14 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Toilet {
-  id: String!
-  isPaid: Boolean!
-  price: Int!
-  address: Address!
-  reviews: [Review!]!
-}
-
 type Address {
   id: String!
   streetNumber: String!
@@ -34,6 +26,14 @@ type Review {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Toilet {
+  id: String!
+  isPaid: Boolean!
+  price: Int!
+  address: Address!
+  reviews: [Review!]!
+}
 
 type Query {
   toilet(id: String!): Toilet!
@@ -76,7 +76,6 @@ input CreateReviewInput {
   performance: Float!
   description: String!
   contributedBy: String!
-  toiletId: String!
 }
 
 input UpdateReviewInput {
@@ -95,7 +94,6 @@ input CreateAddressInput {
   street: String!
   city: String!
   country: String!
-  toiletId: String!
 }
 
 input UpdateAddressInput {
