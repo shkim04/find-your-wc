@@ -59,6 +59,22 @@ type Mutation {
 input CreateToiletInput {
   isPaid: Boolean!
   price: Float!
+  address: CreateAddressInput!
+  reviews: CreateReviewInput!
+}
+
+input CreateAddressInput {
+  streetNumber: String!
+  street: String!
+  city: String!
+  country: String!
+}
+
+input CreateReviewInput {
+  cleanliness: Float!
+  performance: Float!
+  description: String!
+  contributedBy: String!
 }
 
 input UpdateToiletInput {
@@ -71,13 +87,6 @@ input DeleteToiletInput {
   id: String!
 }
 
-input CreateReviewInput {
-  cleanliness: Float!
-  performance: Float!
-  description: String!
-  contributedBy: String!
-}
-
 input UpdateReviewInput {
   id: String!
   cleanliness: Float!
@@ -87,13 +96,6 @@ input UpdateReviewInput {
 
 input DeleteReviewInput {
   id: String!
-}
-
-input CreateAddressInput {
-  streetNumber: String!
-  street: String!
-  city: String!
-  country: String!
 }
 
 input UpdateAddressInput {

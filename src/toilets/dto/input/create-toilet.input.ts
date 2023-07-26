@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsArray, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { CreateAddressInput } from 'src/address/dto/input/create-address.input';
 import { CreateReviewInput } from 'src/reviews/dto/input/create-review.input';
 
@@ -17,6 +17,5 @@ export class CreateToiletInput {
   address?: CreateAddressInput;
 
   @Field()
-  @IsArray()
-  reviews?: CreateReviewInput[];
+  reviews?: CreateReviewInput;
 }

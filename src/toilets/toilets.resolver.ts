@@ -42,7 +42,8 @@ export class ToiletsResolver {
 
   @Mutation(() => Toilet)
   async createToilet(
-    @Args('createToiletData') createToiletData: CreateToiletInput,
+    @Args('createToiletData')
+    createToiletData: CreateToiletInput,
   ): Promise<Toilet> {
     return this.toiletService.createToilet(createToiletData);
   }

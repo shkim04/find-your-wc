@@ -56,7 +56,7 @@ export class ToiletsService {
           create: createToiletData.address,
         },
         reviews: {
-          create: createToiletData.reviews,
+          create: [createToiletData.reviews],
         },
       },
     });
