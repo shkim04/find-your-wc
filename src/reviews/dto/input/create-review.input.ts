@@ -13,7 +13,14 @@ export class CreateReviewInput {
   description?: string;
 
   @Field()
+  toiletId?: string;
+
+  @Field()
   @IsNotEmpty()
   @IsEmail()
   contributedBy: string;
+
+  @Field()
+  @IsNotEmpty()
+  password: string;
 }

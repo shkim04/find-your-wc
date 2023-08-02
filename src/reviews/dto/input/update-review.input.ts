@@ -15,4 +15,12 @@ export class UpdateReviewInput {
 
   @Field()
   description?: string;
+
+  @Field()
+  @IsNotEmpty()
+  contributedBy: string;
+
+  @Field()
+  @IsNotEmpty()
+  password: string;
 }

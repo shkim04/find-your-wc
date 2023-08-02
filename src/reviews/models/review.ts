@@ -19,7 +19,10 @@ export class Review {
   contributedBy: ReviewDB['contributedBy'];
 
   @Field(() => String)
-  toiletId: ReviewDB['id'];
+  password: ReviewDB['password'];
+
+  @Field(() => String)
+  toiletId: ReviewDB['toiletId'];
 
   @Field(() => GraphQLISODateTime)
   createdAt: ReviewDB['createdAt'];
