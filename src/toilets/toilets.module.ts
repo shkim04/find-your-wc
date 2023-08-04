@@ -14,6 +14,7 @@ import { ToiletsService } from './toilets.service';
 import { ToiletsRepository } from './toilets.repository';
 import { ReviewsModule } from 'src/reviews/reviews.module';
 import { AddressModule } from 'src/address/address.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AddressModule } from 'src/address/address.module';
     PrismaModule,
     ReviewsModule,
     AddressModule,
+    AuthModule,
   ],
   providers: [ToiletsResolver, ToiletsRepository, ToiletsService],
   exports: [ToiletsResolver, ToiletsService],

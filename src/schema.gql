@@ -39,7 +39,7 @@ type Toilet {
 type Query {
   toilet(id: String!): Toilet!
   toilets(ids: [String!]!, streets: [String!]!, cities: [String!]!, countries: [String!]!): [Toilet!]!
-  review(id: String!): Review!
+  review(contributedBy: String!): Review!
   reviews(toiletId: String!): [Review!]!
   address(toiletId: String!): Address!
   addresses(street: String!, city: String!, country: String!): Address!

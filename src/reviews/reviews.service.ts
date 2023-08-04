@@ -7,13 +7,15 @@ import { CreateReviewInput } from './dto/input/create-review.input';
 import { UpdateReviewInput } from './dto/input/update-review.input';
 import { DeleteReviewInput } from './dto/input/delete-review.input';
 
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class ReviewsService {
   constructor(private reviewRepository: ReviewRepository) {}
 
   public async getReview(getReviewArgs: GetReviewArgs): Promise<Review> {
     return await this.reviewRepository.getReview({
-      where: { id: getReviewArgs.id },
+      where: { contributedBy: getReviewArgs.contributedBy },
     });
   }
 
@@ -26,10 +28,12 @@ export class ReviewsService {
   public async createReview(
     createReviewData: CreateReviewInput,
   ): Promise<Review> {
+    const hashedPassword = await bcrypt.hash(createReviewData.password, 10);
     const review = await this.reviewRepository.createReview({
       data: {
         id: uuidv4(),
         ...createReviewData,
+        password: hashedPassword,
       },
     });
 
