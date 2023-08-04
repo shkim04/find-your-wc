@@ -42,7 +42,6 @@ export class ReviewResolver {
   async deleteReview(
     @Args('deleteReviewData') deleteReviewData: DeleteReviewInput,
   ): Promise<Review> {
-    console.log('1');
     return this.reviewService.deleteReview(deleteReviewData);
   }
 }
