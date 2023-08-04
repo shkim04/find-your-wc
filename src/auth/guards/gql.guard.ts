@@ -9,7 +9,7 @@ export class GqlAuthGuard extends AuthGuard('local') {
     const { req } = ctx.getContext();
     const { deleteReviewData } = ctx.getArgs();
     req.body = deleteReviewData;
-    console.log(req.body);
+
     return req;
   }
 }
