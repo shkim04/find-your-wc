@@ -7,14 +7,14 @@ import {
   // ApolloFederationDriver,
   // ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { PrismaModule } from 'src/database/prisma.module';
+import { PrismaModule } from '../database/prisma.module';
 
 import { ToiletsResolver } from './toilets.resolver';
 import { ToiletsService } from './toilets.service';
 import { ToiletsRepository } from './toilets.repository';
-import { ReviewsModule } from 'src/reviews/reviews.module';
-import { AddressModule } from 'src/address/address.module';
-import { AuthModule } from 'src/auth/auth.module';
+import { ReviewsModule } from '../reviews/reviews.module';
+import { AddressModule } from '../address/address.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [

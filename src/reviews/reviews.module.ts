@@ -3,7 +3,7 @@ import { ReviewResolver } from './reviews.resolver';
 import { ReviewsService } from './reviews.service';
 import { ReviewRepository } from './reviews.repository';
 
-import { PrismaModule } from 'src/database/prisma.module';
+import { PrismaModule } from '../database/prisma.module';
 
 @Module({
   imports: [PrismaModule],

@@ -7,7 +7,7 @@ import { GetReviewsArgs } from './dto/args/get-reviews.args';
 import { CreateReviewInput } from './dto/input/create-review.input';
 import { UpdateReviewInput } from './dto/input/update-review.input';
 import { DeleteReviewInput } from './dto/input/delete-review.input';
-import { GqlAuthGuard } from 'src/auth/guards/gql.guard';
+import { GqlAuthGuard } from '../auth/guards/gql.guard';
 
 @Resolver(() => Review)
 export class ReviewResolver {

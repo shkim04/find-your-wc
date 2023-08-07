@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ReviewsService } from 'src/reviews/reviews.service';
+import { ReviewsService } from '../reviews/reviews.service';
 
 @Injectable()
 export class AuthService {

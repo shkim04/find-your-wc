@@ -16,11 +16,11 @@ import { UpdateToiletInput } from './dto/input/update-toilet.input';
 import { DeleteToiletInput } from './dto/input/delete-toilet.input';
 
 import { ToiletsService } from './toilets.service';
-import { AddressService } from 'src/address/address.service';
-import { ReviewsService } from 'src/reviews/reviews.service';
+import { AddressService } from '../address/address.service';
+import { ReviewsService } from '../reviews/reviews.service';
 
-import { Address } from 'src/address/models/address';
-import { Review } from 'src/reviews/models/review';
+import { Address } from '../address/models/address';
+import { Review } from '../reviews/models/review';
 
 @Resolver(() => Toilet)
 export class ToiletsResolver {
