@@ -1,9 +1,9 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsArray } from 'class-validator';
+import { IsString } from 'class-validator';
 
 @ArgsType()
 export class GetReviewsArgs {
   @Field(() => String)
-  @IsArray()
+  @IsString()
   toiletId: string;
 }
