@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 import { Toilet } from './models/toilet';
 
 import { CreateToiletInput } from './dto/input/create-toilet.input';
@@ -48,6 +49,10 @@ export class ToiletsService {
   public async createToilet(
     createToiletData: CreateToiletInput,
   ): Promise<Toilet> {
+    const reviewPassword = await bcrypt.hash(
+      createToiletData.reviews.password,
+      10,
+    );
     const toilet = await this.repository.createToilet({
       data: {
         id: uuidv4(),
@@ -56,7 +61,12 @@ export class ToiletsService {
           create: createToiletData.address,
         },
         reviews: {
-          create: [createToiletData.reviews],
+          create: [
+            {
+              ...createToiletData.reviews,
+              password: reviewPassword,
+            },
+          ],
         },
       },
     });

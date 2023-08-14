@@ -15,12 +15,20 @@ import { ToiletsRepository } from './toilets.repository';
 import { ReviewsModule } from '../reviews/reviews.module';
 import { AddressModule } from '../address/address.module';
 import { AuthModule } from '../auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      imports: [ConfigModule],
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      useFactory: (config: ConfigService) => {
+        return {
+          autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+          playground: config.get('NODE_ENV') !== 'production',
+        };
+      },
+      inject: [ConfigService],
     }),
     PrismaModule,
     ReviewsModule,

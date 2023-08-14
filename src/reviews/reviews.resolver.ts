@@ -7,7 +7,7 @@ import { GetReviewsArgs } from './dto/args/get-reviews.args';
 import { CreateReviewInput } from './dto/input/create-review.input';
 import { UpdateReviewInput } from './dto/input/update-review.input';
 import { DeleteReviewInput } from './dto/input/delete-review.input';
-import { GqlAuthGuard } from '../auth/guards/gql.guard';
+import { ReviewGuard } from '../auth/guards/gql.guard';
 
 @Resolver(() => Review)
 export class ReviewResolver {
@@ -31,6 +31,7 @@ export class ReviewResolver {
   }
 
   @Mutation(() => Review)
+  @UseGuards(ReviewGuard('updateReviewData'))
   async updateReview(
     @Args('updateReviewData') updateReviewData: UpdateReviewInput,
   ): Promise<Review> {
@@ -38,7 +39,7 @@ export class ReviewResolver {
   }
 
   @Mutation(() => Review)
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(ReviewGuard('deleteReviewData'))
   async deleteReview(
     @Args('deleteReviewData') deleteReviewData: DeleteReviewInput,
   ): Promise<Review> {
