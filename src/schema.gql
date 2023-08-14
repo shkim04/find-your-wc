@@ -75,7 +75,7 @@ input CreateReviewInput {
   cleanliness: Float!
   performance: Float!
   description: String!
-  toiletId: String!
+  toiletId: String
   contributedBy: String!
   password: String!
 }

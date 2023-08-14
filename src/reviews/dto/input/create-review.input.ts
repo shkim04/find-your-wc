@@ -12,7 +12,7 @@ export class CreateReviewInput {
   @Field()
   description?: string;
 
-  @Field()
+  @Field({ nullable: true })
   toiletId?: string;
 
   @Field()
