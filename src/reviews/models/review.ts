@@ -18,7 +18,6 @@ export class Review {
   @Field(() => String)
   contributedBy: ReviewDB['contributedBy'];
 
-  @Field(() => String)
   password: ReviewDB['password'];
 
   @Field(() => String)

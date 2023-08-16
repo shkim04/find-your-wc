@@ -1,5 +1,5 @@
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { Review } from './models/review';
 import { GetReviewArgs } from './dto/args/get-review.args';
@@ -32,6 +32,7 @@ export class ReviewResolver {
 
   @Mutation(() => Review)
   @UseGuards(ReviewGuard('updateReviewData'))
+  @UsePipes(new ValidationPipe({ transform: true }))
   async updateReview(
     @Args('updateReviewData') updateReviewData: UpdateReviewInput,
   ): Promise<Review> {

@@ -17,7 +17,6 @@ type Review {
   performance: Float!
   description: String
   contributedBy: String!
-  password: String!
   toiletId: String!
   createdAt: DateTime!
   updatedAt: DateTime!
