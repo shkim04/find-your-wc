@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { Exclude } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 
 @InputType()
@@ -14,5 +15,13 @@ export class UpdateReviewInput {
   performance: number;
 
   @Field()
-  description?: string;
+  description: string;
+
+  @Field()
+  @IsNotEmpty()
+  contributedBy: string;
+
+  @Field()
+  @Exclude()
+  password: string;
 }

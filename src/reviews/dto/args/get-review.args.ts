@@ -5,5 +5,5 @@ import { IsNotEmpty } from 'class-validator';
 export class GetReviewArgs {
   @Field()
   @IsNotEmpty()
-  id: string;
+  contributedBy: string;
 }

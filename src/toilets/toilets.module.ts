@@ -7,23 +7,33 @@ import {
   // ApolloFederationDriver,
   // ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { PrismaModule } from 'src/database/prisma.module';
+import { PrismaModule } from '../database/prisma.module';
 
 import { ToiletsResolver } from './toilets.resolver';
 import { ToiletsService } from './toilets.service';
 import { ToiletsRepository } from './toilets.repository';
-import { ReviewsModule } from 'src/reviews/reviews.module';
-import { AddressModule } from 'src/address/address.module';
+import { ReviewsModule } from '../reviews/reviews.module';
+import { AddressModule } from '../address/address.module';
+import { AuthModule } from '../auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      imports: [ConfigModule],
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      useFactory: (config: ConfigService) => {
+        return {
+          autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+          playground: config.get('NODE_ENV') !== 'production',
+        };
+      },
+      inject: [ConfigService],
     }),
     PrismaModule,
     ReviewsModule,
     AddressModule,
+    AuthModule,
   ],
   providers: [ToiletsResolver, ToiletsRepository, ToiletsService],
   exports: [ToiletsResolver, ToiletsService],

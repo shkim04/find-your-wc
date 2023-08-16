@@ -27,33 +27,34 @@
 
 ```js
 model Toilet {
-  id      String   @id @default(uuid())
-  address Address?
-  reviews Review[]
-  isPaid  Boolean
-  price   Int
+   id      String   @id @default(uuid())
+   address Address?
+   reviews Review[]
+   isPaid  Boolean
+   price   Int
 }
 
 model Address {
-  id           String  @id @default(uuid())
-  streetNumber String
-  street       String
-  city         String
-  country      String
-  toiletId     String  @unique
-  toilet       Toilet? @relation(fields: [toiletId], references: [id])
+   id           String  @id @default(uuid())
+   streetNumber String
+   street       String
+   city         String
+   country      String
+   toiletId     String  @unique
+   toilet       Toilet? @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Review {
-  id            String   @id @default(uuid())
-  cleanliness   Float
-  performance   Float
-  description   String?  @db.VarChar(1024)
-  contributedBy String   @unique
-  toiletId      String
-  toilet        Toilet?  @relation(fields: [toiletId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+   id            String   @id @default(uuid())
+   cleanliness   Float
+   performance   Float
+   description   String?  @db.VarChar(1024)
+   contributedBy String   @unique
+   password      String
+   toiletId      String
+   toilet        Toilet?  @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+   createdAt     DateTime @default(now())
+   updatedAt     DateTime @updatedAt
 }
 ```
 
