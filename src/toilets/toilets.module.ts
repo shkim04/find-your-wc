@@ -26,6 +26,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         return {
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
           playground: config.get('NODE_ENV') !== 'production',
+          formatError: (error) => {
+            return {
+              message: error.message,
+              code: error.extensions?.code || 'INTERNAL_SERVER_ERROR',
+              name: error.extensions?.name,
+            };
+          },
         };
       },
       inject: [ConfigService],
