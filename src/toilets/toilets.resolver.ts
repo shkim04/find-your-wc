@@ -5,6 +5,7 @@ import {
   Mutation,
   ResolveField,
   Parent,
+  Info,
 } from '@nestjs/graphql';
 import { Toilet } from './models/toilet';
 
@@ -21,6 +22,9 @@ import { ReviewsService } from '../reviews/reviews.service';
 
 import { Address } from '../address/models/address';
 import { Review } from '../reviews/models/review';
+import { Inject } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Resolver(() => Toilet)
 export class ToiletsResolver {
@@ -28,11 +32,22 @@ export class ToiletsResolver {
     private readonly toiletService: ToiletsService,
     private readonly addressService: AddressService,
     private readonly reviewsService: ReviewsService,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
   @Query(() => Toilet, { name: 'toilet', nullable: false })
-  async getToilet(@Args() getToiletArgs: GetToiletArgs): Promise<Toilet> {
-    return this.toiletService.getToilet(getToiletArgs);
+  async getToilet(
+    @Args() getToiletArgs: GetToiletArgs,
+    @Info() info: any,
+  ): Promise<Toilet> {
+    const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
+    if (cachedData) return cachedData;
+
+    info.cacheControl.setCacheHint({ maxAge: 100, scope: 'PUBLIC' });
+    const toilet = await this.toiletService.getToilet(getToiletArgs);
+    await this.cacheService.set(getToiletArgs.id, toilet);
+
+    return toilet;
   }
 
   @Query(() => [Toilet], { name: 'toilets', nullable: false })
