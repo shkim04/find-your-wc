@@ -5,7 +5,6 @@ import {
   Mutation,
   ResolveField,
   Parent,
-  Info,
 } from '@nestjs/graphql';
 import { Toilet } from './models/toilet';
 
@@ -36,14 +35,10 @@ export class ToiletsResolver {
   ) {}
 
   @Query(() => Toilet, { name: 'toilet', nullable: false })
-  async getToilet(
-    @Args() getToiletArgs: GetToiletArgs,
-    @Info() info: any,
-  ): Promise<Toilet> {
+  async getToilet(@Args() getToiletArgs: GetToiletArgs): Promise<Toilet> {
     const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
     if (cachedData) return cachedData;
 
-    info.cacheControl.setCacheHint({ maxAge: 100, scope: 'PUBLIC' });
     const toilet = await this.toiletService.getToilet(getToiletArgs);
     await this.cacheService.set(getToiletArgs.id, toilet);
 

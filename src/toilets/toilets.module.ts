@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import responseCachePlugin from '@apollo/server-plugin-response-cache';
 
 import { PrismaModule } from '../database/prisma.module';
 
@@ -14,33 +13,28 @@ import { ReviewsModule } from '../reviews/reviews.module';
 import { AddressModule } from '../address/address.module';
 import { AuthModule } from '../auth/auth.module';
 
-// import Keyv from 'keyv';
-// import { KeyvAdapter } from '@apollo/utils.keyvadapter';
 import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        ttl: 10,
+        isGlobal: true,
+        store: redisStore,
+        host: config.get('REDIS_HOST'),
+        port: config.get('REDIS_POST'),
+      }),
+      inject: [ConfigService],
+    }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       imports: [ConfigModule],
       driver: ApolloDriver,
       useFactory: (config: ConfigService) => {
-        // const redisUser = config.get('REDIS_USERNAME');
-        // const redisPass = config.get('REDIS_USERNAME');
-        // const redisHost = config.get('REDIS_HOST');
-        // const redisPort = config.get('REDIS_PORT');
-
         return {
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-          // cache: new KeyvAdapter(
-          //   new Keyv(
-          //     `redis://${redisUser}:${redisPass}@${redisHost}:${redisPort}`,
-          //   ),
-          // ),
-          cacheControl: {
-            defaultMaxAge: 60,
-          },
-          plugins: [responseCachePlugin()],
           playground: config.get('NODE_ENV') !== 'production',
           formatError: (error) => {
             return {
