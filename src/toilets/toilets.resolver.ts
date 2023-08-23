@@ -21,9 +21,6 @@ import { ReviewsService } from '../reviews/reviews.service';
 
 import { Address } from '../address/models/address';
 import { Review } from '../reviews/models/review';
-import { Inject } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 @Resolver(() => Toilet)
 export class ToiletsResolver {
@@ -31,18 +28,11 @@ export class ToiletsResolver {
     private readonly toiletService: ToiletsService,
     private readonly addressService: AddressService,
     private readonly reviewsService: ReviewsService,
-    @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
   @Query(() => Toilet, { name: 'toilet', nullable: false })
   async getToilet(@Args() getToiletArgs: GetToiletArgs): Promise<Toilet> {
-    const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
-    if (cachedData) return cachedData;
-
-    const toilet = await this.toiletService.getToilet(getToiletArgs);
-    await this.cacheService.set(getToiletArgs.id, toilet);
-
-    return toilet;
+    return await this.toiletService.getToilet(getToiletArgs);
   }
 
   @Query(() => [Toilet], { name: 'toilets', nullable: false })

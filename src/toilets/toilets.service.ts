@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { Toilet } from './models/toilet';
@@ -11,18 +11,33 @@ import { GetToiletArgs } from './dto/args/get-toilet.args';
 import { GetToiletsArgs } from './dto/args/get-toilets.args';
 
 import { ToiletsRepository } from './toilets.repository';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ToiletsService {
-  constructor(private repository: ToiletsRepository) {}
+  constructor(
+    private repository: ToiletsRepository,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
+  ) {}
 
   public async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
-    return await this.repository.getToilet({
+    const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
+    if (cachedData) {
+      console.log('Cached');
+      return cachedData;
+    }
+
+    const toilet = await this.repository.getToilet({
       where: { id: getToiletArgs.id },
     });
+
+    await this.cacheService.set(getToiletArgs.id, toilet);
+    return toilet;
   }
+
   public async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
-    return await this.repository.getToilets({
+    const toliets = await this.repository.getToilets({
       where: {
         OR: [
           { id: { in: getToiletsArgs.ids } },
@@ -44,6 +59,8 @@ export class ToiletsService {
         ],
       },
     });
+
+    return toliets;
   }
 
   public async createToilet(
@@ -72,6 +89,7 @@ export class ToiletsService {
     });
     return toilet;
   }
+
   public async updateToilet(
     updateToiletData: UpdateToiletInput,
   ): Promise<Toilet> {
