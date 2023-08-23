@@ -23,10 +23,7 @@ export class ToiletsService {
 
   public async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
     const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
-    if (cachedData) {
-      console.log('Cached');
-      return cachedData;
-    }
+    if (cachedData) return cachedData;
 
     const toilet = await this.repository.getToilet({
       where: { id: getToiletArgs.id },
