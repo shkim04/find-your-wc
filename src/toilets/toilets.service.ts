@@ -21,7 +21,7 @@ export class ToiletsService {
     @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
-  public async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
+  async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
     const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
     if (cachedData) return cachedData;
 
@@ -33,24 +33,23 @@ export class ToiletsService {
     return toilet;
   }
 
-  public async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
+  async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
     const toliets = await this.repository.getToilets({
       where: {
         OR: [
-          { id: { in: getToiletsArgs.ids } },
           {
             address: {
-              street: { in: getToiletsArgs.streets },
+              street: { equals: getToiletsArgs.street },
             },
           },
           {
             address: {
-              city: { in: getToiletsArgs.cities },
+              city: { equals: getToiletsArgs.city },
             },
           },
           {
             address: {
-              country: { in: getToiletsArgs.countries },
+              country: { equals: getToiletsArgs.country },
             },
           },
         ],
@@ -60,9 +59,7 @@ export class ToiletsService {
     return toliets;
   }
 
-  public async createToilet(
-    createToiletData: CreateToiletInput,
-  ): Promise<Toilet> {
+  async createToilet(createToiletData: CreateToiletInput): Promise<Toilet> {
     const reviewPassword = await bcrypt.hash(
       createToiletData.reviews.password,
       10,
@@ -87,9 +84,7 @@ export class ToiletsService {
     return toilet;
   }
 
-  public async updateToilet(
-    updateToiletData: UpdateToiletInput,
-  ): Promise<Toilet> {
+  async updateToilet(updateToiletData: UpdateToiletInput): Promise<Toilet> {
     const toilet = await this.repository.updateToilet({
       where: { id: updateToiletData.id },
       data: updateToiletData,
@@ -98,9 +93,7 @@ export class ToiletsService {
     return toilet;
   }
 
-  public async deleteToilet(
-    deleteToiletData: DeleteToiletInput,
-  ): Promise<Toilet> {
+  async deleteToilet(deleteToiletData: DeleteToiletInput): Promise<Toilet> {
     const toilet = await this.repository.deleteToilet({
       where: {
         id: deleteToiletData.id,

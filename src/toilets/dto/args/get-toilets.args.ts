@@ -1,21 +1,17 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsArray } from 'class-validator';
+import { IsString } from 'class-validator';
 
 @ArgsType()
 export class GetToiletsArgs {
-  @Field(() => [String])
-  @IsArray()
-  ids?: string[];
+  @Field(() => String)
+  @IsString()
+  street?: string;
 
-  @Field(() => [String])
-  @IsArray()
-  streets?: string[];
+  @Field(() => String)
+  @IsString()
+  city?: string;
 
-  @Field(() => [String])
-  @IsArray()
-  cities?: string[];
-
-  @Field(() => [String])
-  @IsArray()
-  countries?: string[];
+  @Field(() => String)
+  @IsString()
+  country?: string;
 }
