@@ -3,15 +3,15 @@ import { IsString } from 'class-validator';
 
 @ArgsType()
 export class GetToiletsArgs {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   street?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   city?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   country?: string;
 }
