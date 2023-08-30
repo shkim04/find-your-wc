@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import * as redisStore from 'cache-manager-redis-store';
+import { CacheModule } from '@nestjs/cache-manager';
 
 import { PrismaModule } from '../database/prisma.module';
 
@@ -13,8 +15,11 @@ import { ReviewsModule } from '../reviews/reviews.module';
 import { AddressModule } from '../address/address.module';
 import { AuthModule } from '../auth/auth.module';
 
-import { CacheModule } from '@nestjs/cache-manager';
-import * as redisStore from 'cache-manager-redis-store';
+type OriginalError = {
+  message: string;
+  statusCode: number;
+  error: string;
+};
 
 @Module({
   imports: [
@@ -35,12 +40,28 @@ import * as redisStore from 'cache-manager-redis-store';
       useFactory: (config: ConfigService) => {
         return {
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-          playground: config.get('NODE_ENV') !== 'production',
+          introspection: config.get('NODE_ENV') !== 'production',
+          playground: {
+            settings: {
+              'schema.polling.enable': false,
+            },
+          },
+          includeStacktraceInErrorResponses:
+            config.get('NODE_ENV') !== 'production',
           formatError: (error) => {
+            const originalError = error.extensions
+              ?.originalError as OriginalError;
+
+            if (!originalError) {
+              return {
+                message: error.message,
+                code: error.extensions?.code,
+              };
+            }
+
             return {
-              message: error.message,
-              code: error.extensions?.code || 'INTERNAL_SERVER_ERROR',
-              name: error.extensions?.name,
+              message: originalError.message,
+              code: error.extensions?.code,
             };
           },
         };
