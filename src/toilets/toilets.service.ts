@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { Toilet } from './models/toilet';
@@ -22,39 +22,45 @@ export class ToiletsService {
   ) {}
 
   async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
-    const cachedData = await this.cacheService.get<Toilet>(getToiletArgs.id);
-    if (cachedData) return cachedData;
-
     const toilet = await this.repository.getToilet({
       where: { id: getToiletArgs.id },
     });
 
-    await this.cacheService.set(getToiletArgs.id, toilet);
+    if (!toilet) throw new NotFoundException('Cannot find the toilet');
     return toilet;
   }
 
   async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
+    const cachedData = await this.cacheService.get<Toilet[]>(
+      getToiletsArgs.street,
+    );
+    if (cachedData) return cachedData;
+
     const toliets = await this.repository.getToilets({
       where: {
         OR: [
           {
             address: {
-              street: { equals: getToiletsArgs.street },
+              street: getToiletsArgs.street,
             },
           },
           {
             address: {
-              city: { equals: getToiletsArgs.city },
+              city: getToiletsArgs.city,
             },
           },
           {
             address: {
-              country: { equals: getToiletsArgs.country },
+              country: getToiletsArgs.country,
             },
           },
         ],
       },
     });
+
+    getToiletsArgs.street &&
+      toliets.length !== 0 &&
+      (await this.cacheService.set(getToiletsArgs.street, toliets));
 
     return toliets;
   }
