@@ -31,12 +31,14 @@ export class ToiletsService {
   }
 
   async getToilets(getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
-    const cachedData = await this.cacheService.get<Toilet[]>(
-      getToiletsArgs.street,
-    );
-    if (cachedData) return cachedData;
+    if (getToiletsArgs.street) {
+      const cachedData = await this.cacheService.get<Toilet[]>(
+        getToiletsArgs.street,
+      );
+      if (cachedData) return cachedData;
+    }
 
-    const toliets = await this.repository.getToilets({
+    const toilets = await this.repository.getToilets({
       where: {
         OR: [
           {
@@ -59,10 +61,10 @@ export class ToiletsService {
     });
 
     getToiletsArgs.street &&
-      toliets.length !== 0 &&
-      (await this.cacheService.set(getToiletsArgs.street, toliets));
+      toilets.length !== 0 &&
+      (await this.cacheService.set(getToiletsArgs.street, toilets));
 
-    return toliets;
+    return toilets;
   }
 
   async createToilet(createToiletData: CreateToiletInput): Promise<Toilet> {
