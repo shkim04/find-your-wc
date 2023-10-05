@@ -6,7 +6,7 @@ import { IsNotEmpty } from 'class-validator';
 export class UpdateReviewInput {
   @Field()
   @IsNotEmpty()
-  id: string;
+  id: number;
 
   @Field()
   cleanliness: number;

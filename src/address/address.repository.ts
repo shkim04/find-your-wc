@@ -40,7 +40,7 @@ export class AddressRepository {
   }
 
   async deleteAddress(params: {
-    where: Prisma.ReviewWhereUniqueInput;
+    where: Prisma.AddressWhereUniqueInput;
   }): Promise<Address> {
     const { where } = params;
     return this.prisma.address.delete({ where });

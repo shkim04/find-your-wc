@@ -12,7 +12,7 @@ type Address {
 }
 
 type Review {
-  id: String!
+  id: Int!
   cleanliness: Float!
   performance: Float!
   description: String
@@ -28,7 +28,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Toilet {
-  id: String!
+  id: Int!
   isPaid: Boolean!
   price: Int!
   address: Address!
@@ -36,11 +36,11 @@ type Toilet {
 }
 
 type Query {
-  toilet(id: String!): Toilet!
+  toilet(streetNumber: String!, street: String!, city: String!, country: String!): Toilet!
   toilets(street: String, city: String, country: String): [Toilet!]!
   review(contributedBy: String!): Review!
   reviews(toiletId: String!): [Review!]!
-  address(toiletId: String!): Address!
+  address(toiletId: Int!): Address!
   addresses(street: String!, city: String!, country: String!): Address!
 }
 
@@ -74,23 +74,23 @@ input CreateReviewInput {
   cleanliness: Float!
   performance: Float!
   description: String!
-  toiletId: String
+  toiletId: Int
   contributedBy: String!
   password: String!
 }
 
 input UpdateToiletInput {
-  id: String!
+  id: Int!
   isPaid: Boolean!
-  price: Float!
+  price: Int!
 }
 
 input DeleteToiletInput {
-  id: String!
+  id: Int!
 }
 
 input UpdateReviewInput {
-  id: String!
+  id: Float!
   cleanliness: Float!
   performance: Float!
   description: String!
@@ -99,7 +99,7 @@ input UpdateReviewInput {
 }
 
 input DeleteReviewInput {
-  id: String!
+  id: Int!
   contributedBy: String!
   password: String!
 }

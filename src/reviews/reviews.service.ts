@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 import { Review } from './models/review';
 import { GetReviewArgs } from './dto/args/get-review.args';
 import { ReviewRepository } from './reviews.repository';
@@ -31,7 +30,6 @@ export class ReviewsService {
     const hashedPassword = await bcrypt.hash(createReviewData.password, 10);
     const review = await this.reviewRepository.createReview({
       data: {
-        id: uuidv4(),
         ...createReviewData,
         password: hashedPassword,
       },

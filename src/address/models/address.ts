@@ -19,5 +19,5 @@ export class Address {
   country: AddressDB['country'];
 
   @Field(() => String)
-  toiletId: AddressDB['id'];
+  toiletId: AddressDB['toiletId'];
 }

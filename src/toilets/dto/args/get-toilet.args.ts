@@ -1,9 +1,25 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 @ArgsType()
 export class GetToiletArgs {
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
-  id: string;
+  @IsString()
+  streetNumber: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  street: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  city: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  country: string;
 }

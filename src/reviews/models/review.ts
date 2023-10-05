@@ -1,9 +1,15 @@
-import { Field, Float, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  GraphQLISODateTime,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import { Review as ReviewDB } from '@prisma/client';
 
 @ObjectType()
 export class Review {
-  @Field(() => String)
+  @Field(() => Int)
   id: ReviewDB['id'];
 
   @Field(() => Float)

@@ -1,5 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { Toilet } from './models/toilet';
 
@@ -23,7 +22,30 @@ export class ToiletsService {
 
   async getToilet(getToiletArgs: GetToiletArgs): Promise<Toilet> {
     const toilet = await this.repository.getToilet({
-      where: { id: getToiletArgs.id },
+      where: {
+        AND: [
+          {
+            address: {
+              streetNumber: getToiletArgs.streetNumber,
+            },
+          },
+          {
+            address: {
+              street: getToiletArgs.street,
+            },
+          },
+          {
+            address: {
+              city: getToiletArgs.city,
+            },
+          },
+          {
+            address: {
+              country: getToiletArgs.country,
+            },
+          },
+        ],
+      },
     });
 
     if (!toilet) throw new NotFoundException('Cannot find the toilet');
@@ -74,7 +96,6 @@ export class ToiletsService {
     );
     const toilet = await this.repository.createToilet({
       data: {
-        id: uuidv4(),
         ...createToiletData,
         address: {
           create: createToiletData.address,

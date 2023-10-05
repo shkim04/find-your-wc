@@ -5,7 +5,7 @@ import { Review } from '../../reviews/models/review';
 
 @ObjectType()
 export class Toilet {
-  @Field(() => String)
+  @Field(() => Int)
   id: ToiletDB['id'];
 
   @Field(() => Boolean)

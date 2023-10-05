@@ -14,10 +14,10 @@ export class ToiletsRepository {
   }
 
   async getToilet(params: {
-    where?: Prisma.ToiletWhereUniqueInput;
+    where?: Prisma.ToiletWhereInput;
   }): Promise<Toilet> {
     const { where } = params;
-    return this.prisma.toilet.findUnique({ where });
+    return this.prisma.toilet.findFirst({ where });
   }
 
   async getToilets(params: {

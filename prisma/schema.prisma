@@ -2,41 +2,43 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Toilet {
-    id      String   @id @default(uuid())
-    address Address?
-    reviews Review[]
-    isPaid  Boolean
-    price   Int
+  id      Int      @id @default(autoincrement())
+  address Address?
+  reviews Review[]
+  isPaid  Boolean
+  price   Int
 }
 
 model Address {
-    id           String  @id @default(uuid())
-    streetNumber String
-    street       String
-    city         String
-    country      String
-    toiletId     String  @unique
-    toilet       Toilet? @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id           String  @id @default(uuid())
+  streetNumber String
+  street       String
+  city         String
+  country      String
+  toiletId     Int     @unique
+  toilet       Toilet? @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@unique([country, city, street, streetNumber])
 }
 
 model Review {
-    id            String   @id @default(uuid())
-    cleanliness   Float
-    performance   Float
-    description   String?  @db.VarChar(1024)
-    contributedBy String   @unique
-    password      String
-    toiletId      String
-    toilet        Toilet?  @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  cleanliness   Float
+  performance   Float
+  description   String?  @db.VarChar(1024)
+  contributedBy String   @unique
+  password      String
+  toiletId      Int
+  toilet        Toilet?  @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
