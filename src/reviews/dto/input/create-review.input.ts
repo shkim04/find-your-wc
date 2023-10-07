@@ -1,26 +1,26 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class CreateReviewInput {
-  @Field()
+  @Field(() => Float)
   cleanliness: number;
 
-  @Field()
+  @Field(() => Float)
   performance: number;
 
-  @Field()
+  @Field(() => String)
   description: string;
 
   @Field(() => Int, { nullable: true })
   toiletId?: number;
 
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
   @IsEmail()
   contributedBy: string;
 
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
   password: string;
 }

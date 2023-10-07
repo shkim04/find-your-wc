@@ -11,10 +11,7 @@ export class AuthService {
       contributedBy: reviewData.contributedBy,
     });
 
-    const isMatch = await await bcrypt.compare(
-      reviewData.password,
-      review.password,
-    );
+    const isMatch = await bcrypt.compare(reviewData.password, review.password);
 
     if (!isMatch) return null;
 

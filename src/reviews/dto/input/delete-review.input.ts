@@ -7,11 +7,11 @@ export class DeleteReviewInput {
   @IsNotEmpty()
   id: number;
 
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
   contributedBy: string;
 
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
   password: string;
 }

@@ -90,7 +90,7 @@ input DeleteToiletInput {
 }
 
 input UpdateReviewInput {
-  id: Float!
+  id: Int!
   cleanliness: Float!
   performance: Float!
   description: String!
