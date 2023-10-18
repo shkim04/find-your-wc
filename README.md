@@ -1,91 +1,58 @@
 # Find Your W.C. - Temporary Project Title
 
-## main - www.findyourwc.dev - imaginary domain address
+## Description
+The idea of the project got started from some experience about toilets when I traveled. I believe that I am not the only one who urgently wanted to find a nice toilet, ideally free. If it is an emergency toilet situation, the trip will probably end up being a nightmare. 
 
-1. select a city
-2. maps
-3. page description
-4. link to contribution
+So, I have been thinking that it would be amazing to have a place where people can share their experiences about toilets such as addresses, price, cleanliness and etc.
 
-## detail - www.findyourwc.dev/[city]
-
-1. city info
-2. city map
-   - click one wc - www.findyourwc.dev/[city]/[toilet]
-   - wc info shows up
-3. link to contribution
-
-## contribution - www.findyourwc.dev/[contribution]
-
-1. email
-2. experience
-   - description
-   - cleanliness
-   - overall rating
+This repository is particulary for the backend of the application I am building. 
 
 ## Data modeling
 
 ```js
 model Toilet {
-   id      String   @id @default(uuid())
-   address Address?
-   reviews Review[]
-   isPaid  Boolean
-   price   Int
+  id      Int      @id @default(autoincrement())
+  address Address?
+  reviews Review[]
+  isPaid  Boolean
+  price   Int
 }
 
 model Address {
-   id           String  @id @default(uuid())
-   streetNumber String
-   street       String
-   city         String
-   country      String
-   toiletId     String  @unique
-   toilet       Toilet? @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id           String  @id @default(uuid())
+  streetNumber String
+  street       String
+  city         String
+  country      String
+  toiletId     Int     @unique
+  toilet       Toilet? @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@unique([country, city, street, streetNumber])
 }
 
 model Review {
-   id            String   @id @default(uuid())
-   cleanliness   Float
-   performance   Float
-   description   String?  @db.VarChar(1024)
-   contributedBy String   @unique
-   password      String
-   toiletId      String
-   toilet        Toilet?  @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-   createdAt     DateTime @default(now())
-   updatedAt     DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  cleanliness   Float
+  performance   Float
+  description   String?  @db.VarChar(1024)
+  contributedBy String   @unique
+  password      String
+  toiletId      Int
+  toilet        Toilet?  @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 ```
 
-## Tech Stack
-
-### Backend
+### Tech Stack
 
 1. Main Backend
-   - [x] Nest.js
+   - Nest.js
 2. API
-   - [x] GraphQL
+   - GraphQL
 3. Database
-   - [x] PostgreQL
+   - PostgreQL
 
-### Frontend
-
-1. Framerwork
-   - [x] Next.js
-2. Tailwind.css
-
-### Utilities
-
-1. Map API
-   - [ ] Google
-   - [ ] Others if any
 
 ### Deploy
-
-1. Backend Candidates
-   - [x] Google Cloud Run
-
-2. Frontend
-   - [ ] AWS Amplify
-   - [ ] Vercel
+- Google Cloud Run
