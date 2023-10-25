@@ -35,9 +35,18 @@ type Toilet {
   reviews: [Review!]!
 }
 
+type TotalAggregate {
+  numOfReviews: Int!
+  numOfToilets: Int!
+  numOfCountries: Int!
+  numOfCities: Int!
+  numOfStreets: Int!
+}
+
 type Query {
   toilet(streetNumber: String!, street: String!, city: String!, country: String!): Toilet!
   toilets(street: String, city: String, country: String): [Toilet!]!
+  aggregate: TotalAggregate!
   review(contributedBy: String!): Review!
   reviews(toiletId: String!): [Review!]!
   address(toiletId: Int!): Address!

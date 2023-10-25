@@ -7,6 +7,7 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { Toilet } from './models/toilet';
+import { TotalAggregate } from './models/total-aggregate';
 
 import { GetToiletArgs } from './dto/args/get-toilet.args';
 import { GetToiletsArgs } from './dto/args/get-toilets.args';
@@ -38,6 +39,11 @@ export class ToiletsResolver {
   @Query(() => [Toilet], { name: 'toilets', nullable: false })
   async getToilets(@Args() getToiletsArgs: GetToiletsArgs): Promise<Toilet[]> {
     return this.toiletService.getToilets(getToiletsArgs);
+  }
+
+  @Query(() => TotalAggregate, { name: 'aggregate' })
+  async getAggregate(): Promise<TotalAggregate> {
+    return this.toiletService.totalAggregate();
   }
 
   @Mutation(() => Toilet)

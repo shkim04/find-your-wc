@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Toilet } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
+import { TotalAggregate } from './models/total-aggregate';
 
 @Injectable()
 export class ToiletsRepository {
@@ -44,5 +45,38 @@ export class ToiletsRepository {
   }): Promise<Toilet> {
     const { where } = params;
     return this.prisma.toilet.delete({ where });
+  }
+
+  async totalAggregate(): Promise<TotalAggregate> {
+    const [
+      toiletCount,
+      reviewCount,
+      countryGroupBy,
+      cityGroupBy,
+      streetGroupBy,
+    ] = await Promise.all([
+      this.prisma.toilet.count({ select: { _all: true } }),
+      this.prisma.review.count({ select: { _all: true } }),
+      this.prisma.address.groupBy({
+        by: ['country'],
+        _count: { _all: true },
+      }),
+      this.prisma.address.groupBy({
+        by: ['city'],
+        _count: { _all: true },
+      }),
+      this.prisma.address.groupBy({
+        by: ['street'],
+        _count: { _all: true },
+      }),
+    ]);
+
+    return {
+      numOfToilets: toiletCount._all,
+      numOfReviews: reviewCount._all,
+      numOfCountries: countryGroupBy.length,
+      numOfCities: cityGroupBy.length,
+      numOfStreets: streetGroupBy.length,
+    };
   }
 }

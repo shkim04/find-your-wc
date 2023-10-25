@@ -1,6 +1,10 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+
 import { Toilet } from './models/toilet';
+import { TotalAggregate } from './models/total-aggregate';
 
 import { CreateToiletInput } from './dto/input/create-toilet.input';
 import { UpdateToiletInput } from './dto/input/update-toilet.input';
@@ -10,8 +14,6 @@ import { GetToiletArgs } from './dto/args/get-toilet.args';
 import { GetToiletsArgs } from './dto/args/get-toilets.args';
 
 import { ToiletsRepository } from './toilets.repository';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ToiletsService {
@@ -130,5 +132,9 @@ export class ToiletsService {
     });
 
     return toilet;
+  }
+
+  async totalAggregate(): Promise<TotalAggregate> {
+    return await this.repository.totalAggregate();
   }
 }
