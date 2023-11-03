@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ToiletsModule } from './toilets/toilets.module';
 import { LoggerModule } from 'nestjs-pino';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LoggerModule } from 'nestjs-pino';
         },
       },
     }),
+    PrometheusModule.register(),
     ToiletsModule,
   ],
   providers: [],

@@ -30,7 +30,7 @@ type OriginalError = {
         isGlobal: true,
         store: redisStore,
         host: config.get('REDIS_HOST'),
-        port: config.get('REDIS_POST'),
+        port: config.get('REDIS_PORT'),
       }),
       inject: [ConfigService],
     }),

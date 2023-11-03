@@ -31,6 +31,7 @@
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^9.4.3",
     "@prisma/client": "^4.16.2",
+    "@willsoto/nestjs-prometheus": "^6.0.0",
     "bcrypt": "^5.1.1",
     "cache-manager": "^5.2.4",
     "cache-manager-redis-store": "^2.0.0",
@@ -41,6 +42,7 @@
     "passport-local": "^1.0.0",
     "pino-http": "^8.5.0",
     "pino-pretty": "^10.2.3",
+    "prom-client": "^15.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "uuid": "^9.0.1"

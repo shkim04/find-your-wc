@@ -1,5 +1,11 @@
+.git
 Dockerfile
+docker-compose.yml
 .dockerignore
-node_moduels
+**/node_modules
 npm-debug.log
 dist
+.prettierrc
+.gitignore
+.eslintrc.js
+README.md
