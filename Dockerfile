@@ -3,7 +3,8 @@
 ###################
 
 FROM node:lts-alpine As development
-RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && chmod +x /bin/pnpm
+RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && \
+chmod +x /bin/pnpm
 
 WORKDIR /usr/src/app
 
@@ -12,7 +13,7 @@ COPY --chown=node:node pnpm-lock.yaml ./
 RUN pnpm fetch
 
 COPY --chown=node:node . .
-RUN pnpm install
+RUN pnpm install --offline
 RUN pnpm exec prisma generate
 
 USER node
@@ -22,7 +23,8 @@ USER node
 ###################
 
 FROM node:lts-alpine As build
-RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && chmod +x /bin/pnpm
+RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && \
+chmod +x /bin/pnpm
 
 WORKDIR /usr/src/app
 
@@ -34,7 +36,7 @@ COPY --chown=node:node . .
 RUN pnpm build
 ENV NODE_ENV production
 
-RUN pnpm install --prod
+RUN pnpm install --offline --prod
 
 USER node
 
