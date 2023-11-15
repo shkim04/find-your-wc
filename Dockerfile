@@ -2,8 +2,8 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM node:18 As development
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+FROM node:lts-alpine As development
+RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && chmod +x /bin/pnpm
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,8 @@ COPY --chown=node:node pnpm-lock.yaml ./
 RUN pnpm fetch
 
 COPY --chown=node:node . .
-RUN pnpm install --offline
+RUN pnpm install
+RUN pnpm exec prisma generate
 
 USER node
 
@@ -20,8 +21,8 @@ USER node
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:18 As build
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+FROM node:lts-alpine As build
+RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && chmod +x /bin/pnpm
 
 WORKDIR /usr/src/app
 
@@ -30,11 +31,10 @@ COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modul
 COPY --chown=node:node .env .env
 COPY --chown=node:node . .
 
-RUN pnpm exec prisma generate
 RUN pnpm build
 ENV NODE_ENV production
 
-RUN pnpm install --offline --prod
+RUN pnpm install --prod
 
 USER node
 
@@ -42,7 +42,7 @@ USER node
 # PRODUCTION
 ###################
 
-FROM node:18-alpine As production
+FROM node:lts-alpine As production
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist

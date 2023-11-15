@@ -1,5 +1,21 @@
 services:
+  find-your-wc-app:
+    container_name: find-your-wc-app
+    image: find-your-wc
+    env_file:
+      - .env
+    environment:
+      - PORT=${PORT}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_NAME}?schema=public
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    ports:
+      - 4000:4000
+    links:
+      - postgres
+      - redis
   postgres:
+    container_name: postgres
     image: postgres
     restart: always
     env_file:
