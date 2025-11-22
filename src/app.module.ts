@@ -18,9 +18,10 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
             singleLine: true,
           },
         },
-        customLogLevel: (res, err) => {
-          if (res.statusCode >= 500 || err) return 'error';
+        customLogLevel: (req, res, err) => {
+          if (res.statusCode >= 500) return 'error';
           if (res.statusCode >= 400) return 'warn';
+          if (err) return 'warn';
           return 'info';
         },
       },

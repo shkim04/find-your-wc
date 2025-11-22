@@ -3,8 +3,9 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import * as redisStore from 'cache-manager-redis-store';
+import KeyvRedis from '@keyv/redis';
 import { CacheModule } from '@nestjs/cache-manager';
+import Keyv from 'keyv';
 
 import { PrismaModule } from '../database/prisma.module';
 
@@ -25,13 +26,38 @@ type OriginalError = {
   imports: [
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) => ({
-        ttl: 10,
-        isGlobal: true,
-        store: redisStore,
-        host: config.get('REDIS_HOST'),
-        port: config.get('REDIS_PORT'),
-      }),
+      useFactory: async (config: ConfigService) => {
+        const redisHost = config.get<string>('REDIS_HOST');
+        const redisPortConfig = config.get<string | number>('REDIS_PORT');
+        const redisPort =
+          typeof redisPortConfig === 'number'
+            ? redisPortConfig
+            : redisPortConfig
+              ? Number(redisPortConfig)
+              : undefined;
+
+        const redisUrl =
+          redisHost || redisPort !== undefined
+            ? `redis://${redisHost ?? '127.0.0.1'}${
+                redisPort !== undefined && !Number.isNaN(redisPort)
+                  ? `:${redisPort}`
+                  : ''
+              }`
+            : undefined;
+
+        const cacheTtlMs = 10_000;
+
+        return {
+          ttl: cacheTtlMs,
+          isGlobal: true,
+          stores: [
+            new Keyv({
+              store: new KeyvRedis(redisUrl),
+              ttl: cacheTtlMs,
+            }),
+          ],
+        };
+      },
       inject: [ConfigService],
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
