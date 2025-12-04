@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ToiletsModule } from './toilets/toilets.module';
+import { ToiletsModule } from './modules/toilets/toilets.module';
 import { LoggerModule } from 'nestjs-pino';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+
+import { PrismaModule } from './infra/database/prisma.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { AddressModule } from './modules/address/address.module';
+import { AuthModule } from './common/auth/auth.module';
+import { GraphqlInfraModule } from './infra/graphql/graphql.module';
+import { CacheInfraModule } from './infra/cache/cache.module';
 
 @Module({
   imports: [
@@ -28,6 +35,12 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
     }),
     PrometheusModule.register(),
     ToiletsModule,
+    ReviewsModule,
+    AddressModule,
+    PrismaModule,
+    AuthModule,
+    GraphqlInfraModule,
+    CacheInfraModule
   ],
   providers: [],
 })
