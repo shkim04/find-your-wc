@@ -36,10 +36,12 @@ model Review {
   cleanliness   Float
   performance   Float
   description   String?  @db.VarChar(1024)
-  contributedBy String   @unique
+  contributedBy String
   password      String
   toiletId      Int
   toilet        Toilet?  @relation(fields: [toiletId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  @@unique([toiletId, contributedBy])
 }

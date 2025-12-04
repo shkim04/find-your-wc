@@ -17,7 +17,7 @@ type Review {
   performance: Float!
   description: String
   contributedBy: String!
-  toiletId: String!
+  toiletId: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -44,32 +44,32 @@ type TotalAggregate {
 }
 
 type Query {
-  toilet(streetNumber: String!, street: String!, city: String!, country: String!): Toilet!
-  toilets(street: String, city: String, country: String): [Toilet!]!
-  aggregate: TotalAggregate!
-  review(contributedBy: String!): Review!
-  reviews(toiletId: String!): [Review!]!
+  getToilet(streetNumber: String!, street: String!, city: String!, country: String!): Toilet!
+  getToilets(street: String, city: String, country: String): [Toilet!]!
+  getAggregate: TotalAggregate!
+  review(toiletId: Int!, contributedBy: String!): Review!
+  reviews(toiletId: Float!): [Review!]!
   address(toiletId: Int!): Address!
   addresses(street: String!, city: String!, country: String!): Address!
 }
 
 type Mutation {
-  createToilet(createToiletData: CreateToiletInput!): Toilet!
-  updateToilet(updateToiletData: UpdateToiletInput!): Toilet!
-  deleteToilet(deleteToiletData: DeleteToiletInput!): Toilet!
-  createReview(createReviewData: CreateReviewInput!): Review!
-  updateReview(updateReviewData: UpdateReviewInput!): Review!
-  deleteReview(deleteReviewData: DeleteReviewInput!): Review!
-  createAddress(createAddressData: CreateAddressInput!): Address!
-  updateAddress(updateAddressData: UpdateAddressInput!): Address!
-  deleteAddress(deleteAddressData: DeleteAddressInput!): Address!
+  createToilet(input: CreateToiletInput!): Toilet!
+  updateToilet(input: UpdateToiletInput!): Toilet!
+  deleteToilet(input: DeleteToiletInput!): Toilet!
+  createReview(input: CreateReviewInput!): Review!
+  updateReview(input: UpdateReviewInput!): Review!
+  deleteReview(input: DeleteReviewInput!): Review!
+  createAddress(input: CreateAddressInput!): Address!
+  updateAddress(input: UpdateAddressInput!): Address!
+  deleteAddress(input: DeleteAddressInput!): Address!
 }
 
 input CreateToiletInput {
   isPaid: Boolean!
   price: Float!
   address: CreateAddressInput!
-  reviews: CreateReviewInput!
+  reviews: [CreateReviewInput!]
 }
 
 input CreateAddressInput {
