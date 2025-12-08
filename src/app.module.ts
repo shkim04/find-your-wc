@@ -4,12 +4,15 @@ import { ToiletsModule } from './modules/toilets/toilets.module';
 import { LoggerModule } from 'nestjs-pino';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
-import { PrismaModule } from './infra/database/prisma.module';
-import { ReviewsModule } from './modules/reviews/reviews.module';
-import { AddressModule } from './modules/address/address.module';
-import { AuthModule } from './common/auth/auth.module';
 import { GraphqlInfraModule } from './infra/graphql/graphql.module';
 import { CacheInfraModule } from './infra/cache/cache.module';
+import { PrismaModule } from './infra/database/prisma.module';
+
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { AddressModule } from './modules/address/address.module';
+
+import { AuthModule } from './common/auth/auth.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -40,7 +43,8 @@ import { CacheInfraModule } from './infra/cache/cache.module';
     PrismaModule,
     AuthModule,
     GraphqlInfraModule,
-    CacheInfraModule
+    CacheInfraModule,
+    HealthModule
   ],
   providers: [],
 })
