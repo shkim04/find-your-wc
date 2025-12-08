@@ -1,43 +1,44 @@
+version: "3.9"
+
 services:
-  find-your-wc-app:
+  app:
     container_name: find-your-wc-app
-    image: find-your-wc
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
-      - .env
+      - .env.docker
     environment:
-      - PORT=${PORT}
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_NAME}?schema=public
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
+      # If you want to override or add any:
+      NODE_ENV: development
     ports:
-      - 4000:4000
-    links:
+      - "4000:4000"
+    depends_on:
       - postgres
       - redis
+
   postgres:
-    container_name: postgres
-    image: postgres
-    restart: always
-    env_file:
-      - .env
+    container_name: fywc_postgres
+    image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_NAME=${POSTGRES_NAME}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_HOST=${POSTGRES_HOST}
-    volumes:
-      - postgres:/var/lib/postgresql/data
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   redis:
-    container_name: cache
-    image: redis
+    container_name: fywc_redis
+    image: redis:7-alpine
+    restart: unless-stopped
     ports:
-      - 6379:6379
+      - "6379:6379"
     volumes:
-      - redis:/data
+      - redis_data:/data
+
 volumes:
-  postgres:
-  redis:
-    driver: local
+  postgres_data:
+  redis_data:
