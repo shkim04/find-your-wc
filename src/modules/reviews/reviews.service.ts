@@ -9,7 +9,7 @@ import { DeleteReviewInput } from './dto/input/delete-review.input';
 
 import { ReviewRepository } from './reviews.repository';
 
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 
 @Injectable()
