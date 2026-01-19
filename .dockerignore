@@ -1,6 +1,6 @@
 .git
-Dockerfile
 docker-compose.yml
+docker-compose.*.yml
 .dockerignore
 **/node_modules
 npm-debug.log
@@ -9,3 +9,4 @@ dist
 .gitignore
 .eslintrc.js
 README.md
+.env

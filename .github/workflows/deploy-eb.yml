@@ -1,0 +1,83 @@
+name: Deploy to Elastic Beanstalk (ECR)
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPO: fywc-backend
+  EB_APP_NAME: find-your-wc-backend
+  EB_ENV_NAME: Find-your-wc-backend-api
+  S3_BUCKET: fywc-eb-bundles-20260113-26703
+  ROLE_ARN: arn:aws:iam::740976465304:role/GitHubActions-FYWC-Deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Build & push image
+        env:
+          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          docker build -t "$REGISTRY/${ECR_REPO}:${IMAGE_TAG}" .
+          docker push "$REGISTRY/${ECR_REPO}:${IMAGE_TAG}"
+          echo "IMAGE_URI=$REGISTRY/${ECR_REPO}:${IMAGE_TAG}" >> $GITHUB_ENV
+
+      - name: Create Dockerrun bundle
+        env:
+          IMAGE_URI: ${{ env.IMAGE_URI }}
+          VERSION_LABEL: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p eb-bundle
+          cat > eb-bundle/Dockerrun.aws.json <<EOF
+          {
+            "AWSEBDockerrunVersion": 1,
+            "Image": { "Name": "${IMAGE_URI}", "Update": "true" },
+            "Ports": [ { "ContainerPort": 8080 } ]
+          }
+          EOF
+          cd eb-bundle
+          zip -r "../${VERSION_LABEL}.zip" Dockerrun.aws.json
+          cd ..
+
+      - name: Upload bundle to S3
+        env:
+          VERSION_LABEL: ${{ github.sha }}
+        run: |
+          aws s3 cp "${VERSION_LABEL}.zip" "s3://${S3_BUCKET}/${VERSION_LABEL}.zip"
+
+      - name: Create EB application version
+        env:
+          VERSION_LABEL: ${{ github.sha }}
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name "${EB_APP_NAME}" \
+            --version-label "${VERSION_LABEL}" \
+            --source-bundle S3Bucket="${S3_BUCKET}",S3Key="${VERSION_LABEL}.zip" \
+            --process
+
+      - name: Deploy (update environment)
+        env:
+          VERSION_LABEL: ${{ github.sha }}
+        run: |
+          aws elasticbeanstalk update-environment \
+            --environment-name "${EB_ENV_NAME}" \
+            --version-label "${VERSION_LABEL}"

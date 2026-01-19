@@ -7,11 +7,11 @@ import { PrismaClientExceptionFilter } from './common/exeception-filters/prisma-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const config = app.get(ConfigService);
-  const port = config.get('PORT');
+  const port = Number(config.get('PORT') ?? 8080);
 
   app.useLogger(app.get(Logger));
   app.useGlobalFilters(new PrismaClientExceptionFilter());
-  await app.listen(parseInt(port) || 8080);
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrap();
